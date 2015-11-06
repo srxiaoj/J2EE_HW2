@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/Calculator")
 public class Calculator extends HttpServlet {
     private static final long serialVersionUID = 1;
+    private static final String PATTERN = "^<([a-z]+)([^<]+)*(?";
     
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -52,6 +53,8 @@ public class Calculator extends HttpServlet {
         	try {
         		if (yValue.equals("")) {
         			out.println("<p><span style=\"color:red\"> y is missing!</span></p>");
+				} else if (action.equals("/") && yValue.equals("0")) {
+					out.println("<p><span style=\"color:blue\">y cannot be 0 when dividing</span></p>");
 				} else {
 					y = Double.parseDouble(yValue);
 					validY = true;
@@ -75,12 +78,8 @@ public class Calculator extends HttpServlet {
 				double product = getProduct(x, y);
 				out.println("            <td colspan=\"2\" style=\"text-align:center;\">" + String.format(" %,.2f", x) + " * " + String.format(" %,.2f", y) + " = " + String.format(" %,.2f", product) + "</td>");
 			} else if ("/".equals(action)) {
-				if (y == 0) {
-					out.println("<p><span style=\"color:red\">y cannot be 0 when dividing</span></p>");
-				} else {
-					double divide = getDivision(x, y);
-					out.println("            <td colspan=\"2\" style=\"text-align:center;\">" + String.format(" %,.2f", x) + " / " + String.format(" %,.2f", y) + " = " + String.format(" %,.2f", divide) + "</td>");
-				}
+				double divide = getDivision(x, y);
+				out.println("            <td colspan=\"2\" style=\"text-align:center;\">" + String.format(" %,.2f", x) + " / " + String.format(" %,.2f", y) + " = " + String.format(" %,.2f", divide) + "</td>");
 			}
 		} else {
 //			out.println("            <td colspan=\"2\" style=\"text-align:center;\">" + x + " + " + y + "</td>");
@@ -90,13 +89,21 @@ public class Calculator extends HttpServlet {
 		out.println("          <tr>");
         out.println("            <td>X: </td>");
         out.println("            <td>");
-        out.println("              <input id=\"Xlabel\" type=\"text\" size=\"30\" name=\"xVal\"/>");
+        if (xValue != null) {
+        	out.println("              <input id=\"Xlabel\" type=\"text\" size=\"30\" name=\"xVal\" value=" + xValue +">");
+        } else {
+        	out.println("              <input id=\"Xlabel\" type=\"text\" size=\"30\" name=\"xVal\">");
+        }
         out.println("            </td>");
         out.println("          </tr>");
         out.println("          <tr>");
         out.println("            <td>Y: </td>");
         out.println("            <td>");
-        out.println("              <input id=\"ylabel\" type=\"text\" size=\"30\" name=\"yVal\"/>");
+        if (yValue != null) {
+        	out.println("              <input id=\"ylabel\" type=\"text\" size=\"30\" name=\"yVal\" value=" + yValue +">");
+        } else {
+        	out.println("              <input id=\"ylabel\" type=\"text\" size=\"30\" name=\"yVal\">");
+        }
         out.println("            </td>");
         out.println("          </tr>");
         out.println("          <tr>");
@@ -114,22 +121,6 @@ public class Calculator extends HttpServlet {
         out.println("  </body>");
         out.println("</html>");
     }
-//    private static final String PATTERN = "^<([a-z]+)([^<]+)*(?";
-//    private double getValue(String textName, PrintWriter out) {
-//    	double textValue = 0;
-//    	if (isValidInput(textName, out)) {
-//    		textValue = Double.parseDouble(textName);
-//    	} else {
-//    		if (textName.matches(PATTERN)) {
-//        		out.println("<p><span style=\"color:green\">&quot;" + textName
-//                        + "&quot; is a html tag</span></p>");
-//        	} else {
-//        		out.println("<p><span style=\"color:blue\">&quot;" + textName
-//                            + "&quot; is not a number!</span></p>");
-//        	}
-//        }
-//    	return textValue;
-//    }
     private double getSum(double x, double y) {
     	return x + y;
     }
