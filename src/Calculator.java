@@ -84,6 +84,8 @@ public class Calculator extends HttpServlet {
 			} else if ("/".equals(action)) {
 				double divide = getDivision(x, y);
 				out.println("            <td colspan=\"2\" style=\"text-align:center;\">" + String.format(" %,.2f", x) + " / " + String.format(" %,.2f", y) + " = " + String.format(" %,.2f", divide) + "</td>");
+			} else {
+				out.println("            <td colspan=\"2\" style=\"text-align:center;\">" + "Please have some legal operators" + "</td>");
 			}
 		}
 		out.println("          </tr>");
@@ -126,7 +128,6 @@ public class Calculator extends HttpServlet {
     private String sanitize(String s) {
         return s.replace("&", "&amp;").replace("<", "&lt;")
                 .replace(">", "&gt;").replace("\"", "&quot;").replace(" ", "&nbsp;");
-//    	return s;
     }
     private double getSum(double x, double y) {
     	return x + y;
