@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/Calculator")
 public class Calculator extends HttpServlet {
     private static final long serialVersionUID = 1;
-    private static final String PATTERN = "^<([a-z]+)([^<]+)*(?";
+    private static final String PATTERN = "";
     
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -38,9 +38,13 @@ public class Calculator extends HttpServlet {
         double x = 0;
 		if (xValue != null) {
 			try {
+				xValue = sanitize(xValue);
 				if (xValue.equals("")) {
 					out.println("<p><span style=\"color:red\"> x is missing!</span></p>");
+				} else if (xValue.matches(PATTERN)) {
+					out.println("<p><span style=\"color:red\"> x is a html tag</span></p>");
 				} else {
+					out.println("<p><span style=\"color:blue\"> xValue is: " + xValue + "</span></p>");
 					x = Double.parseDouble(xValue);
 					validX = true;
 				}
@@ -51,11 +55,15 @@ public class Calculator extends HttpServlet {
         double y = 0;
         if (yValue != null) {
         	try {
+        		yValue = sanitize(yValue);
         		if (yValue.equals("")) {
         			out.println("<p><span style=\"color:red\"> y is missing!</span></p>");
 				} else if (action.equals("/") && yValue.equals("0")) {
 					out.println("<p><span style=\"color:blue\">y cannot be 0 when dividing</span></p>");
+				} else if (yValue.matches(PATTERN)) {
+					out.println("<p><span style=\"color:red\"> y is a html tag</span></p>");
 				} else {
+					out.println("<p><span style=\"color:blue\"> yValue is : " + yValue + "</span></p>");
 					y = Double.parseDouble(yValue);
 					validY = true;
         		}
@@ -81,8 +89,6 @@ public class Calculator extends HttpServlet {
 				double divide = getDivision(x, y);
 				out.println("            <td colspan=\"2\" style=\"text-align:center;\">" + String.format(" %,.2f", x) + " / " + String.format(" %,.2f", y) + " = " + String.format(" %,.2f", divide) + "</td>");
 			}
-		} else {
-//			out.println("            <td colspan=\"2\" style=\"text-align:center;\">" + x + " + " + y + "</td>");
 		}
 		out.println("          </tr>");
 		
@@ -120,6 +126,10 @@ public class Calculator extends HttpServlet {
         out.println("    </div>");
         out.println("  </body>");
         out.println("</html>");
+    }
+    private String sanitize(String s) {
+        return s.replace("&", "&amp;").replace("<", "&lt;")
+                .replace(">", "&gt;").replace("\"", "&quot;").replace(" ", "&nbsp;");
     }
     private double getSum(double x, double y) {
     	return x + y;
