@@ -37,8 +37,12 @@ public class Calculator extends HttpServlet {
         double x = 0;
 		if (xValue != null) {
 			try {
-				x = Double.parseDouble(xValue);
-				validX = true;
+				if (xValue.equals("")) {
+					out.println("<p><span style=\"color:red\"> x is missing!</span></p>");
+				} else {
+					x = Double.parseDouble(xValue);
+					validX = true;
+				}
 			} catch (NumberFormatException e) {
 				out.println("<p><span style=\"color:red\"> x is not a number!</span></p>");
 			}
@@ -46,8 +50,12 @@ public class Calculator extends HttpServlet {
         double y = 0;
         if (yValue != null) {
         	try {
-				y = Double.parseDouble(yValue);
-				validY = true;
+        		if (yValue.equals("")) {
+        			out.println("<p><span style=\"color:red\"> y is missing!</span></p>");
+				} else {
+					y = Double.parseDouble(yValue);
+					validY = true;
+        		}
 			} catch (NumberFormatException e) {
 				out.println("<p><span style=\"color:red\"> y is not a number!</span></p>");
 			}
@@ -106,40 +114,22 @@ public class Calculator extends HttpServlet {
         out.println("  </body>");
         out.println("</html>");
     }
-    private static final String PATTERN = "^<([a-z]+)([^<]+)*(?";
-    private double getValue(String textName, PrintWriter out) {
-    	double textValue = 0;
-    	if (isValidInput(textName, out)) {
-    		textValue = Double.parseDouble(textName);
-    	} else {
-    		if (textName.matches(PATTERN)) {
-        		out.println("<p><span style=\"color:green\">&quot;" + textName
-                        + "&quot; is a html tag</span></p>");
-        	} else {
-        		out.println("<p><span style=\"color:blue\">&quot;" + textName
-                            + "&quot; is not a number!</span></p>");
-        	}
-        }
-    	return textValue;
-    }
-    private boolean isValidInput(String textName, PrintWriter out) {
-    	if (textName.matches(PATTERN)) {
-//    		out.println("<p><span style=\"color:red\">&quot;" + textName
-//                    + "&quot; is a html tag</span></p>");
-    		return false;
-    	}
-    	double textValue;
-    	if (textName != null) {
-        	try {
-        		textValue = Double.parseDouble(textName);
-        	} catch (NumberFormatException e) {
-//        		out.println("<h2><span style=\"color:red\">&quot;" + textName
-//                        + "&quot; is not a number!</span></h2>");
-        		return false;
-        	}
-        }
-    	return true;
-    }
+//    private static final String PATTERN = "^<([a-z]+)([^<]+)*(?";
+//    private double getValue(String textName, PrintWriter out) {
+//    	double textValue = 0;
+//    	if (isValidInput(textName, out)) {
+//    		textValue = Double.parseDouble(textName);
+//    	} else {
+//    		if (textName.matches(PATTERN)) {
+//        		out.println("<p><span style=\"color:green\">&quot;" + textName
+//                        + "&quot; is a html tag</span></p>");
+//        	} else {
+//        		out.println("<p><span style=\"color:blue\">&quot;" + textName
+//                            + "&quot; is not a number!</span></p>");
+//        	}
+//        }
+//    	return textValue;
+//    }
     private double getSum(double x, double y) {
     	return x + y;
     }
