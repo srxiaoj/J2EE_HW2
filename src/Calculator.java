@@ -128,8 +128,9 @@ public class Calculator extends HttpServlet {
         out.println("</html>");
     }
     private String sanitize(String s) {
-        return s.replace("&", "&amp;").replace("<", "&lt;")
-                .replace(">", "&gt;").replace("\"", "&quot;").replace(" ", "&nbsp;");
+//        return s.replace("&", "&amp;").replace("<", "&lt;")
+//                .replace(">", "&gt;").replace("\"", "&quot;").replace(" ", "&nbsp;");
+    	return s;
     }
     private double getSum(double x, double y) {
     	return x + y;
