@@ -12,10 +12,10 @@ public class Calculator extends HttpServlet {
     private static final long serialVersionUID = 1;
     private static final String PATTERN = "";
     
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        doGet(request, response);
-    }
+//    public void doPost(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//        doGet(request, response);
+//    }
     
     public void doGet(HttpServletRequest request ,HttpServletResponse response) 
             throws IOException, ServletException {
@@ -41,8 +41,6 @@ public class Calculator extends HttpServlet {
 				xValue = sanitize(xValue);
 				if (xValue.equals("")) {
 					out.println("<p><span style=\"color:red\"> x is missing!</span></p>");
-				} else if (xValue.matches(PATTERN)) {
-					out.println("<p><span style=\"color:red\"> x is a html tag</span></p>");
 				} else {
 					out.println("<p><span style=\"color:blue\"> xValue is: " + xValue + "</span></p>");
 					x = Double.parseDouble(xValue);
@@ -60,8 +58,6 @@ public class Calculator extends HttpServlet {
         			out.println("<p><span style=\"color:red\"> y is missing!</span></p>");
 				} else if (action.equals("/") && yValue.equals("0")) {
 					out.println("<p><span style=\"color:blue\">y cannot be 0 when dividing</span></p>");
-				} else if (yValue.matches(PATTERN)) {
-					out.println("<p><span style=\"color:red\"> y is a html tag</span></p>");
 				} else {
 					out.println("<p><span style=\"color:blue\"> yValue is : " + yValue + "</span></p>");
 					y = Double.parseDouble(yValue);
@@ -72,7 +68,7 @@ public class Calculator extends HttpServlet {
 			}
         }
         out.println("  <div>");
-        out.println("    <form action=\"Calculator\" method=\"POST\">");
+        out.println("    <form action=\"Calculator\" method=\"GET\">");
         out.println("       <table class=\"oneTable\">");
         out.println("          <tr>");
 		if (action != null && validX && validY) {
@@ -128,9 +124,9 @@ public class Calculator extends HttpServlet {
         out.println("</html>");
     }
     private String sanitize(String s) {
-//        return s.replace("&", "&amp;").replace("<", "&lt;")
-//                .replace(">", "&gt;").replace("\"", "&quot;").replace(" ", "&nbsp;");
-    	return s;
+        return s.replace("&", "&amp;").replace("<", "&lt;")
+                .replace(">", "&gt;").replace("\"", "&quot;").replace(" ", "&nbsp;");
+//    	return s;
     }
     private double getSum(double x, double y) {
     	return x + y;
