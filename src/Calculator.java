@@ -49,6 +49,8 @@ public class Calculator extends HttpServlet {
 			} catch (NumberFormatException e) {
 				out.println("<p><span style=\"color:red\"> x is not a number!</span></p>");
 			}
+		} else if (xValue == null & action != null) {
+			out.println("<p><span style=\"color:blue\"> xValue is: " + "NULL" + "</span></p>");
 		}
         double y = 0;
         if (yValue != null) {
@@ -66,7 +68,9 @@ public class Calculator extends HttpServlet {
 			} catch (NumberFormatException e) {
 				out.println("<p><span style=\"color:red\"> y is not a number!</span></p>");
 			}
-        }
+        } else if (xValue == null & action != null) {
+			out.println("<p><span style=\"color:blue\"> yValue is: " + "NULL" + "</span></p>");
+		}
         out.println("  <div>");
         out.println("    <form action=\"Calculator\" method=\"GET\">");
         out.println("       <table class=\"oneTable\">");
